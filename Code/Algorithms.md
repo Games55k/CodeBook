@@ -41,8 +41,9 @@ for (int i = 1; i <= s1.size(); i++) {
     }
 }
 ```
+## 最短路
 
-## Floyd最短路 (多源最短路)
+### Floyd最短路 (多源最短路)
 时间复杂度( $O(n^3)$ )
 ```cpp
 void Floyd() {
@@ -66,40 +67,8 @@ void solve() {
 }
 ```
 
-## Dijkstra最短路 
-朴素版 ( $O(n^2)$ )
-```cpp
-const int N = 1e3 + 10;
-int n, m;
-long long dp[N];
-std::bitset<N> vis;
-std::vector<std::pair<int, int>> g[N];
+### Dijkstra最短路 (单源最短路)
 
-void dijkstra(int st) {
-    memset(dp, 0x3f, sizeof(dp));
-    dp[st] = 0;
-    for (int i = 1; i <= n; i++) {
-        int u = 1;
-        for (int j = 1; j <= n; j++) {
-            if (vis[u] || !vis[j] && dp[j] < dp[u]) u = j;
-        }
-        vis[u] = true;
-        for (auto &[v, w] : g[u]) {
-            if (!vis[v] && dp[u] + w < dp[v]) dp[v] = dp[u] + w;
-        }
-    }
-}
-
-void solve() {
-    std::cin >> n >> m;
-    while (m--) {
-        int u, v, w;
-        std::cin >> u >> v >> w;
-        g[u].push_back({v, w});
-    }
-    dijkstra(1);
-}
-```
 堆优化版 ( $O(m\log m)$ )
 ```cpp
 const int N = 2e5 + 10;
