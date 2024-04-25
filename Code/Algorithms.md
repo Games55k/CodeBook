@@ -147,6 +147,9 @@ void solve() {
 
 ## 最小生成树
 
+### Prim算法（ $O((n+m)\log n)$ ）
+思路：从一个点开始，每次不断加最小的点，从而确保每一个点到其它点都是最优
+
 ```cpp
 const int N = 1e5 + 4;
 long long d[N];
@@ -190,7 +193,7 @@ void solve() {
     }
     bool ok = true;
     for (int i = 1; i <= n; i++) {
-        if (itr[i] != true) {
+        if (！itr[i]) {
             ok = false;
             break;
         }
