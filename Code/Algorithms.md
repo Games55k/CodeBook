@@ -16,6 +16,18 @@ long long binpow(long long a, long long b, long long p) {
 
 ```
 
+## 最大子段和
+
+```cpp
+long long ans = 0, max = 0;
+for (int i = 0; i < n; i++) {
+    int x;
+    std::cin >> x;
+    max = std::max(0ll, max + x);
+    ans = std::max(ans, max);
+}
+```
+
 ## 最长公共子序列（LCS）( $O(nm)$ )
 
 ```cpp
