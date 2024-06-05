@@ -39,7 +39,6 @@ dq.size();  返回元素数量
 str.find(ch, start = 0) 查找并返回从 start 开始的字符 ch 的位置
 str.rfind(ch) 从末尾开始，查找并返回第一个找到的字符 ch 的位置（皆从 0 开始）（如果查找不到，返回 -1）
 str.substr(start, len) 可以从字符串的 start（从 0 开始）截取一个长度为 len 的字符串（缺省 len 时代码截取到字符串末尾）。
-str.append(s) 将 s 添加到字符串末尾。
 str.append(s, pos, n) 将字符串 s 中，从 pos 开始的 n 个字符连接到当前字符串结尾。
 str.replace(pos, n, s) 删除从 pos 开始的 n 个字符，然后在 pos 处插入串 s。
 str.erase(pos, n) 删除从 pos 开始的 n 个字符。
@@ -83,15 +82,21 @@ nth_element(v.begin(), v.begin() + k, v.end());
 long long sum = accumulate(v.begin(), v.end(), 0ll);
 ```
 
-### 计数函数
-
-```cpp
-
-```
-
 ### 翻转字符串
 
 ```cpp
 reverse(s.begin(), s.end());
 std::ranges::reverse(s);  C++20
+```
+
+### 排列
+
+```cpp
+std::iota(v.begin(), v.end(), 0) //从0 ~ n - 1的全排列
+```
+
+### 返回 $n$ 二进制下左边第一个 $1$ 的位置
+
+```cpp
+std::cout << std::__lg(n) << "\n";
 ```

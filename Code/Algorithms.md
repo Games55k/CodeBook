@@ -170,3 +170,34 @@ void solve() {
     std::cout << (ok ? ans : -1) << "\n";
 }
 ```
+
+## 马拉车
+
+### 思路
+
+1. 找到一个中心，向两边扩展，直到遇到相同的字符
+2. 计算出以该中心为中心的回文串长度
+3. 计算出以该中心为中心，两边扩展的回文串长度
+4. 更新最大回文串长度
+
+### 实现
+
+```cpp
+    int n;
+    std::cin >> n;
+    std::vector<int> p(2 * n + 3);
+    char s[2 * n + 3];
+    std::cin >> s + 1;
+    for (int i = 2 * n + 1; i >= 1; i--) {
+        i & 1 ? s[i] = '#' : s[i] = s[i >> 1];
+    }
+    s[0] = '$', s[2 * n + 2] = '@';
+    int C = 0, R = 0, ans = 0;
+    for (int i = 1; i <= 2 * n + 1; i++) {
+        p[i] = i < R ? std::min(p[2 * C - i], R - i) : 1;
+        while (s[i + p[i]] == s[i - p[i]]) p[i]++;
+        if (i + p[i] > R) C = i, R = i + p[i];
+        ans = std::max(ans, p[i] - 1);
+    }
+    std::cout << ans << "\n";
+```
