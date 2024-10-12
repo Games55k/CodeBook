@@ -38,7 +38,7 @@ dq.size();  返回元素数量
 ```cpp
 str.find(ch, start = 0) 查找并返回从 start 开始的字符 ch 的位置
 str.rfind(ch) 从末尾开始，查找并返回第一个找到的字符 ch 的位置（皆从 0 开始）（如果查找不到，返回 -1）
-str.substr(start, len) 可以从字符串的 start（从 0 开始）截取一个长度为 len 的字符串（缺省 len 时代码截取到字符串末尾）。
+str.substr(start, len) 可以从字符串的 start（从 0 开始）截取一个长度为 len 的字符串（缺少 len 时代码截取到字符串末尾）。
 str.append(s, pos, n) 将字符串 s 中，从 pos 开始的 n 个字符连接到当前字符串结尾。
 str.replace(pos, n, s) 删除从 pos 开始的 n 个字符，然后在 pos 处插入串 s。
 str.erase(pos, n) 删除从 pos 开始的 n 个字符。
@@ -87,6 +87,20 @@ long long sum = accumulate(v.begin(), v.end(), 0ll);
 ```cpp
 reverse(s.begin(), s.end());
 std::ranges::reverse(s);  C++20
+```
+
+### 转换大小写
+```cpp
+std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+```
+
+### 排序
+
+```cpp
+sort(v.begin(), v.end());  默认升序
+sort(v.begin(), v.end(), greater<>());  降序
+std::ranges::sort(v);  C++20
 ```
 
 ### 排列
