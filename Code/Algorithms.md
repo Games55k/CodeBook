@@ -69,48 +69,81 @@ void solve() {
 
 ### Dijkstra最短路 (单源最短路)
 
-堆优化版 ( $O(m\log m)$ )
+堆优化版 ( $O(m\log m)$ ) 带路径
 ```cpp
-const int N = 2e5 + 10;
-int n, m;
-long long dp[N];
-std::bitset<N> vis;
-struct Edge {
+#include <bits/stdc++.h>
+
+using i64 = long long;
+
+struct Edge{
     int v;
-    long long w;
+    i64 w;
     bool operator < (const Edge &x) const {
         return w > x.w;
-    }
-}
-std::vector<Edge> g[N];
-
-void dijkstra(int st) {
-    memset(dp, 0x3f, sizeof(long long) * (n + 1));
-    dp[st] = 0;
-    std::priority_queue<Edge> pq;
-    pq.push({st, dp[st]});
-    while (pq.size()) {
-        int x = pq.top().v; pq.pop();
-        if (vis[x]) continue;
-        vis[x] = true;
-        for (auto &[v, w] : g[x]) {
-            if (!vis[v] && dp[x] + w < dp[v]) {
-                dp[v] = dp[x] + w;
-                pq.push({v, dp[v]});
-            }
-        }
-    }
-}
-
+    };
+};
 
 void solve() {
+    int n, m;
     std::cin >> n >> m;
+    std::vector<std::vector<Edge>> g(n + 1);
     while (m--) {
-        int u, v, w;
+        int u, v;
+        i64 w;
         std::cin >> u >> v >> w;
         g[u].push_back({v, w});
+        g[v].push_back({u, w});
     }
+    std::vector<i64> dis(n + 1, LLONG_MAX);
+    std::vector<bool> vis(n + 1);
+    std::vector<int> pre(n + 1, -1);
+    auto dijkstra = [&](int st) {
+        dis[st] = 0;
+        std::priority_queue<Edge> pq;
+        pq.push({st, dis[st]});
+        while (!pq.empty()) {
+            int x = pq.top().v; pq.pop();
+            if (vis[x]) continue;
+            vis[x] = true;
+            for (auto &[v, w] : g[x]) {
+                if (!vis[v] && dis[x] + w < dis[v]) {
+                    pre[v] = x;
+                    dis[v] = dis[x] + w;
+                    pq.push({v , dis[v]});
+                }
+            }
+        }
+    };
     dijkstra(1);
+    if (dis[n] != LLONG_MAX) {
+        std::vector<int> ans;
+        int idx = n;
+        while (pre[idx] != 1) {
+            ans.push_back(idx);
+            idx = pre[idx];
+        }
+        ans.push_back(idx);
+        ans.push_back(1);
+        std::ranges::reverse(ans);
+        for (auto &i : ans) {
+            std::cout << i << " \n"[&i == &ans.back()];
+        }
+        std::cout << dis[n] << "\n";
+    } else {
+        std::cout << -1 << "\n";
+    }
+}
+
+int main()
+{
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    int t = 1;
+    // std::cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
 }
 ```
 
@@ -162,7 +195,7 @@ void solve() {
     }
     bool ok = true;
     for (int i = 1; i <= n; i++) {
-        if (！itr[i]) {
+        if (!itr[i]) {
             ok = false;
             break;
         }
