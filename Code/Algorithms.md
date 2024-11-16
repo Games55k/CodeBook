@@ -4,8 +4,8 @@
 
 ```cpp
 
-long long binpow(long long a, long long b, long long p) {
-    long long res = 1;
+i64 binpow(i64 a, i64 b, i64 p) {
+    i64 res = 1;
     while (b) {
         if (b & 1) res = res * a % p;
         a = a * a % p;
@@ -19,7 +19,7 @@ long long binpow(long long a, long long b, long long p) {
 ## 最大子段和
 
 ```cpp
-long long ans = 0, max = 0;
+i64 ans = 0, max = 0;
 for (int i = 0; i < n; i++) {
     int x;
     std::cin >> x;
@@ -28,7 +28,7 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-## 最长公共子序列（LCS）( $O(nm)$ )
+## 最长公共子序列 ( LCS ) ( $O(nm)$ )
 
 ```cpp
 for (int i = 1; i <= s1.size(); i++) {
@@ -44,7 +44,8 @@ for (int i = 1; i <= s1.size(); i++) {
 ## 最短路
 
 ### Floyd最短路 (多源最短路)
-时间复杂度( $O(n^3)$ )
+时间复杂度( $O(n^3)$ )  
+枚举中转点
 ```cpp
 void Floyd() {
     for (int k = 1; k <= n; k++) {
@@ -75,17 +76,16 @@ void solve() {
 
 using i64 = long long;
 
-struct Edge{
-    int v;
-    i64 w;
-    bool operator < (const Edge &x) const {
-        return w > x.w;
-    };
-};
-
 void solve() {
     int n, m;
     std::cin >> n >> m;
+    struct Edge{
+        int v;
+        i64 w;
+        bool operator < (const Edge &x) const {
+            return w > x.w;
+        };
+    };
     std::vector<std::vector<Edge>> g(n + 1);
     while (m--) {
         int u, v;
@@ -136,8 +136,7 @@ void solve() {
 
 int main()
 {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
+    std::cin.tie(nullptr) -> std::ios::sync_with_stdio(false);
     int t = 1;
     // std::cin >> t;
     while (t--) {
@@ -149,58 +148,65 @@ int main()
 
 ## 最小生成树
 
-### Prim算法（ $O((n+m)\log n)$ ）
+### Prim算法( $O((n+m)\log n)$ )
 思路：从一个点开始，每次不断加最小的点，从而确保每一个点到其它点都是最优
 
 ```cpp
-const int N = 1e5 + 4;
-long long d[N];
+#include <bits/stdc++.h>
 
-struct Edge {
-    int v;
-    long long w;
-    bool operator < (const Edge &v) const {
-        return w > v.w;
-    }
-};
+using i64 = long long;
 
-std::vector<Edge> g[N];
-std::bitset<N> itr;
 
 void solve() {
     int n, m;
     std::cin >> n >> m;
-    memset(d, 0x3f, sizeof(d));
+    struct Edge {
+        int v;
+        i64 w;
+        bool operator < (const Edge &x) const {
+            return w > x.w;
+        };
+    };
+    std::vector<std::vector<Edge>> g(n + 1);
     while (m--) {
         int u, v;
-        long long w;
+        i64 w;
         std::cin >> u >> v >> w;
         g[u].push_back({v, w});
         g[v].push_back({u, w});
     }
+    std::vector<bool> vis(n + 1);
+    i64 ans = 0;
     std::priority_queue<Edge> pq;
-    long long ans = 0;
     pq.push({1, 0});
-    while (pq.size()) {
+    while (!pq.empty()) {
         auto [x, w] = pq.top(); pq.pop();
-        if (itr[x]) continue;
-        itr[x] = true;
+        if (vis[x]) continue;
+        vis[x] = true;
         ans += w;
-        for (auto &[v, w] : g[x]) {
-            if (!itr[v] && w < d[v]) {
-                d[v] = w;
-                pq.push({v, w});
-            }
+        for (auto &[v, s] : g[x]) {
+            pq.push({v, s});
         }
     }
-    bool ok = true;
     for (int i = 1; i <= n; i++) {
-        if (!itr[i]) {
-            ok = false;
-            break;
+        if (!vis[i]) {
+            std::cout << -1 << "\n";
+            return;
         }
     }
-    std::cout << (ok ? ans : -1) << "\n";
+    std::cout << ans << "\n";
+}
+
+int main()
+{
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    int t = 1;
+    // std::cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
 }
 ```
 
