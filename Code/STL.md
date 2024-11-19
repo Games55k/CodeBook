@@ -122,3 +122,9 @@ std::hypot(x, y); //勾股定理
 std::hypot(x, y, z); //点到原点的距离 cpp17
 
 ```
+
+## DEBUG类
+
+```cpp
+assert(条件);  //条件不成立时，程序终止
+```
